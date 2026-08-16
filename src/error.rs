@@ -29,7 +29,7 @@ impl CompError {
         Self {
             message: message.into(),
             pos,
-            len
+            len,
         }
     }
 
@@ -47,12 +47,15 @@ impl CompError {
         let column_end = (self.pos.column + self.len - 1).min(line.len());
 
         let mut result = String::new();
-        result.push_str(&format!("--> {}:{}:{}\n", "input", self.pos.line, self.pos.column));
-        result.push_str(&format!(" {}\n", line));
+        result.push_str(&format!(
+            "--> {}:{}:{}\n",
+            "input", self.pos.line, self.pos.column
+        ));
+        result.push_str(&format!(" {line}\n"));
 
         // Рисуем стрелочки-указатели
         if column_start < line.len() {
-            result.push_str(" ");
+            result.push(' ');
             for _ in 0..column_start {
                 result.push(' ');
             }

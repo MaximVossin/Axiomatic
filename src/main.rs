@@ -1,12 +1,13 @@
-mod lexer;
 mod error;
+mod lexer;
 
-use std::io::{self, Write};
 use crate::lexer::Lexer;
 use crate::lexer::TokenKind;
+use std::io::{self, Write};
 
+fn main() {
+    env_logger::init();
 
-fn main(){
     if std::env::args().any(|arg| arg == "--version" || arg == "-v") {
         println!("{} v{}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
         std::process::exit(0);
@@ -19,11 +20,9 @@ fn main(){
     loop {
         print!("> ");
         io::stdout().flush().unwrap();
-        
+
         input.clear();
-        io::stdin()
-            .read_line(&mut input)
-            .expect("Error of input!");
+        io::stdin().read_line(&mut input).expect("Error of input!");
         input = input.trim().to_string();
 
         if input.to_lowercase() == ":exit" {
@@ -44,18 +43,12 @@ fn main(){
 
             for tk in &tokens {
                 if !matches!(tk.kind, TokenKind::EOF) {
-                    println!(
-                        "{:?} at {}:{:2} (len={})",
-                        tk.kind,
-                        tk.pos.line,
-                        tk.pos.column,
-                        tk.len
-                    );
+                    println!("{tk}");
                 }
             }
         }
 
-        println!("You pressed: {}", input);
+        println!("You pressed: {input}");
         println!();
     }
 }
