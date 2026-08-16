@@ -1,6 +1,11 @@
 [package]
-name = "Resolutioner"
-version = "0.1.0"
+name = "Axiomatic"
+version = "0.1.1"
 edition = "2024"
 
 [dependencies]
+log = "0.4.33"
+env_logger = "0.11.11"
+
+[dev-dependencies]
+pretty_assertions = "1.4.1"
