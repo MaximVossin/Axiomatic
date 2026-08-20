@@ -44,6 +44,7 @@ pub enum TokenKind {
     Slash,
     Dot,
     Point,
+    Colon,
 
     // Специальные
     EOF,
@@ -71,6 +72,7 @@ impl fmt::Display for TokenKind {
             TokenKind::Slash => write!(f, "/"),
             TokenKind::Dot => write!(f, ","),
             TokenKind::Point => write!(f, "."),
+            TokenKind::Colon => write!(f, ":"),
             TokenKind::EOF => write!(f, "EOF"),
         }
     }
@@ -192,6 +194,7 @@ impl Lexer {
             ),
             ',' => Ok(self.make_token(TokenKind::Dot, start_pos, 1)),
             '.' => Ok(self.make_token(TokenKind::Point, start_pos, 1)),
+            ':' => Ok(self.make_token(TokenKind::Colon, start_pos, 1)),
             '(' => Ok(self.make_token(TokenKind::LParen, start_pos, 1)),
             ')' => Ok(self.make_token(TokenKind::RParen, start_pos, 1)),
             '~' => Ok(self.make_token(TokenKind::Not, start_pos, 1)),
@@ -345,8 +348,7 @@ mod tests {
 
     #[test]
     fn test_lexer_without_errors() {
-        let code =
-            "axiom schema abc_ABC forall,\r exist ~(5+5)*5=30\n    -5 1/5 A /\\ B ~A \\/ C A -> C.";
+        let code = "axiom schema abc_ABC forall,\r exist: ~(5+5)*5=30\n    -5 1/5 A /\\ B ~A \\/ C A -> C.";
         let lex = Lexer::new(&code);
         let (tokens, _errors) = lex.tokenize();
 
@@ -362,6 +364,7 @@ mod tests {
                 TokenKind::ForAll,
                 TokenKind::Dot,
                 TokenKind::Exist,
+                TokenKind::Colon,
                 TokenKind::Not,
                 TokenKind::LParen,
                 TokenKind::Number(5),

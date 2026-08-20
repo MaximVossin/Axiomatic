@@ -1,5 +1,6 @@
 mod error;
 mod lexer;
+mod parser;
 
 use crate::lexer::Lexer;
 use crate::lexer::TokenKind;
